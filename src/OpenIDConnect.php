@@ -166,7 +166,7 @@ class OpenIDConnect extends PluggableAuth {
 			$oidc->setRedirectURL( $redirectURL );
 			wfDebugLog( 'OpenID Connect', 'Redirect URL: ' . $redirectURL );
 			if ( $oidc->authenticate() ) {
-
+                Hooks::run("OpenIDConnectAfterAuthenticate", [$oidc]);
 				$realname = $oidc->requestUserInfo( 'name' );
 				$email = $oidc->requestUserInfo( 'email' );
 				$this->subject = $oidc->requestUserInfo( 'sub' );
@@ -232,7 +232,6 @@ class OpenIDConnect extends PluggableAuth {
 					self::OIDC_SUBJECT_SESSION_KEY, $this->subject );
 				$authManager->setAuthenticationSessionData(
 					self::OIDC_ISSUER_SESSION_KEY, $this->issuer );
-				Hooks::run("OpenIDConnectAfterAuthenticate", [$oidc]);
 				return true;
 			}
 
