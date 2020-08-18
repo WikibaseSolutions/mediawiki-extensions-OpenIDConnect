@@ -232,6 +232,7 @@ class OpenIDConnect extends PluggableAuth {
 					self::OIDC_SUBJECT_SESSION_KEY, $this->subject );
 				$authManager->setAuthenticationSessionData(
 					self::OIDC_ISSUER_SESSION_KEY, $this->issuer );
+				Hooks::run("OpenIDConnectAfterAuthenticate", [$oidc]);
 				return true;
 			}
 
@@ -329,14 +330,17 @@ class OpenIDConnect extends PluggableAuth {
 
 	private static function getPreferredUsername( $config, $oidc, $realname,
 		$email ) {
-		if ( isset( $config['preferred_username'] ) ) {
-			wfDebugLog( 'OpenID Connect', 'Using ' . $config['preferred_username'] .
-				' attribute for preferred username.' . PHP_EOL );
-			$preferred_username =
-				$oidc->requestUserInfo( $config['preferred_username'] );
-		} else {
-			$preferred_username = $oidc->requestUserInfo( 'preferred_username' );
-		}
+	    $preferred_username = '';
+	    if ( $GLOBALS['wgOpenIDConnect_IgnorePreferredNameClaim'] === false ) {
+            if ( isset( $config['preferred_username'] ) ) {
+                wfDebugLog( 'OpenID Connect', 'Using ' . $config['preferred_username'] .
+                    ' attribute for preferred username.' . PHP_EOL );
+                $preferred_username =
+                    $oidc->requestUserInfo( $config['preferred_username'] );
+            } else {
+                $preferred_username = $oidc->requestUserInfo( 'preferred_username' );
+            }
+        }
 		if ( strlen( $preferred_username ) > 0 ) {
 			// do nothing
 		} elseif ( strlen( $realname ) > 0 &&

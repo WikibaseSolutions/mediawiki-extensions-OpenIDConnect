@@ -1,8 +1,9 @@
 {
 	"name": "OpenID Connect",
-	"version": "5.3",
+	"version": "5.4",
 	"author": [
-		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
+		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]",
+		"[https://www.mediawiki.org/wiki/User:Xxmarijnw Marijn van Wezel]"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:OpenID_Connect",
 	"descriptionmsg": "openidconnect-desc",
@@ -38,6 +39,7 @@
 		"OpenIDConnect_ForceLogout": false,
 		"OpenIDConnect_UseRealNameAsUserName": false,
 		"OpenIDConnect_UseEmailNameAsUserName": false,
+		"OpenIDConnect_IgnorePreferredNameClaim": false,
 		"PluggableAuth_Class": "OpenIDConnect"
 	},
 	"PluggableAuthLoginSpecialPages": [
